@@ -60,3 +60,78 @@ now load your full library path
 	export LD_LIBRARY_PATH=/home/ashwini/Unix-prog :$LD_LIBRARY_PATH
 	gcc -L /home/ashwini/Unix-prog main.c -o main -lshared
 	./main 
+
+
+
+********************************MAKEFILE FOR STATIC LIBRARY****************************
+
+I have three files name as main1.c, readfile.c and copyfile.c and one static library libmylib.a
+Now creat makefile for these three files
+
+
+all:myprogram
+
+myprogram:main1.c libmylib.a
+	gcc -lm -o myprogram main1.o -L. -lmylib
+
+mylib.a:main1.o copyfile.o readfile.o
+	ar -cvr libmylib.a main1.o copyfile.o readfile.o
+
+main1.o:main1.c header.h
+	gcc -c main1.c
+
+copyfile.o:copyfile.c header.h
+	gcc -c copyfile.c
+
+readfile.o:readfile.c header.h
+	gcc -c readfile.c
+
+libs:libmylib.a
+
+clean:
+	rm -f myprogram *.o *.a *.gch
+
+
+
+
+**********************************SHARED LIBRARY MAKEFILE*******************************
+I have three files main1.c copyfile.c readfile.c and shared library name libmysharedlib.so
+
+all:myprogram
+
+myprogram:main1.o libmysharedlib.so
+	gcc -L /home/ashwini/Unix-prog myprogram main1.o -lmysharedlib
+
+libmyshardlib.so:main1.o copyfile.o readfile.o
+	gcc -shared main1.c copyfile.c readfile.c -o myprogram libmysharedlib.so
+
+main1.o:main1.c header.h
+	gcc -c -fPIC main1.c
+
+copyfile.o:copyfile.c header.h
+	gcc -c -fPIC copyfile.c 
+
+readfile.o:readfile.c header.h
+	gcc -c -fPIC readfile.c
+
+libs:libmyshaedlib.so
+
+clean:
+	rm -f myprogram  *.o *.so *.gch
+
+
+
+
+NOTE: sometimes after compiling and executing of our make file we will get an error that "cannot open shared object file: No such file or directory" because the compiler is unable to locate the path of a library. to solve this error we need to load a library path. For loadong a library path use following commands. 
+if my library path is "/home/ashwini/Unix-prog"
+
+echo $LD_LIBRARY_PATH
+	if library unable to locate its path then these echo command will not print anything. we need to specify the hoe path for these
+
+
+LD_LIBRARY_PATH=/home/ashwini/Unix-prog
+LD_LIBRARY_PATH=/home/ashwini/Unix-prog :$LD_LIBRARY_PATH
+export LD_LIBRARY_PATH
+
+now execute your program using executable file.
+./myprogram
