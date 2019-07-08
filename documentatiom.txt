@@ -1,0 +1,62 @@
+
+preprocessor, compiler, assembler, linker
+gcc: GNU project compiler
+	-c : compile a program but not to link
+	-Wall: warning all
+	-nodefaultlibs: ignore the default shared or static library, and use the library whose path specified in command.
+	-l : used to linked with library.
+
+
+
+
+
+
+
+
+**************************** STATIC LIBRARIES**********************
+
+first creat your c files as well as header files
+
+compile them and creat .o files i.e. object file
+
+now create a static library.
+
+for that use following syntax.
+
+ar -crv libfile.a first.o second.o
+
+	-c : is used to creat new archive
+	-v : is used to display the content of library.
+	-r : is used to rplace an existed archive if exist.
+
+compile the program using following commands
+
+gcc -static -I ./ -o  main main.c ./libfile.a
+
+execute the program
+
+./main
+
+	-I : used to specify the path of header 
+	-o : specify the name of executable.
+
+	./ write down the full path in case of different libraries.
+
+
+
+
+*************************************SHARED LIBRARIES*********************************
+compile your c files sing gcc -c command
+
+now create a shared library
+
+gcc -shared -o libshared.so first.o second.o
+
+now load your full library path
+
+	echo $LD_LIBRARY_PATH
+	LD_LIBRARY_PATH= /home/ashwini/Unix-prog
+	LD_LIBRARY_PATH=/home/ashwini/Unix-prog :$LD_LIBRARY_PATH
+	export LD_LIBRARY_PATH=/home/ashwini/Unix-prog :$LD_LIBRARY_PATH
+	gcc -L /home/ashwini/Unix-prog main.c -o main -lshared
+	./main 
